@@ -47,7 +47,7 @@ def vector_search_light(user_input: str) -> dict:
             f"Q：{match['metadata']['source']}\nA：{match['metadata']['content']}"
             for match in matches
         )
-        sources = [match["metadata"]["source"] for match in matches]
+        sources = [match["id"] for match in matches]
 
         print(f"🔍 向量查詢結果數量: {len(matches)}")
         # print(f"🔍 向量查詢結果內容: {formatted[:200]}...")  # 只顯示前200個字
