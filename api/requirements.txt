@@ -1,0 +1,8 @@
+flask
+groq
+openai
+cohere
+python-dotenv
+flask-cors
+pinecone
+google-genai

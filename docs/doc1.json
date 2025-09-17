@@ -1,0 +1,112 @@
+[
+  {
+    "id": "interview_srsd_issues",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "2",
+      "question": "從系統分析與設計課程中遇到甚麼問題?",
+      "answer": "因組內許多成員都有拖延的習慣,導致整合時間相當匆忙,debug 時間不足,常常都是期限快到的時候才完成。學姐們也有提到,濟聰老師有建議同學們在系統發表前不應再增加新功能,但因為學長姐整合及除錯時間常不足,所以常常都在快要發表時還在新增功能。"
+    }
+  },
+  {
+    "id": "interview_dev_issues_resolution",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "3",
+      "question": "從系統開發中遇到甚麼問題?如何解決?",
+      "answer": "學長姐在製作系統時初次嘗試使用 Firebase 和 React 這兩種語言,因此對操作尚未完全熟悉。在開發記帳功能時遇到了一些問題,導致資料庫的讀取量超過負荷,最終使得資料庫停止運作。出現這樣的問題主要是因為Firebase 的免費版本有讀取量的限制,同時在學長姐撰寫的程式碼中存在錯誤,導致 React 的‘useEffect‘機制在每次讀取後都不斷觸發資料的讀寫操作,進而造成資料庫超載。\n學長姐認為,在開始操作前應更深入了解系統架構,並在發現錯誤時逐一排除以進行除錯。同時,建議使用GitHub建立分支,並在本地端進行測試後再進行整合,以減少錯誤發生的可能性。\n建議:要了解一個新的語言前可以先了解它是如何運作的,了解一些概念後參考他人的文件並進行實作。"
+    }
+  },
+  {
+    "id": "interview_dev_git_usage",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "3.1",
+      "question": "使用 git 嗎?遇到甚麼問題?",
+      "answer": "有使用,但因擔心負擔過重而未建立分支,導致組員間在使用時出現程式碼上的衝突,例如其中一位組員直接上傳本地端資料而沒有更新雲端的資料,導致主要幹道上原先撰寫好的功能被覆蓋掉,得額外花時間進行處理。"
+    }
+  },
+  {
+    "id": "interview_dev_languages_db",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "3.2",
+      "question": "使用哪個語言、資料庫開發?為何?優缺點是?",
+      "answer": "只有使用到Firebase 和 React,且沒有再加其他的框架。使用的語言不管前後端都是以前沒有接觸過的。\nReact 優點: 與JS和HTML 相比,React 更簡單且模組化,能夠一次性在原始頁面進行重複元素的修改,維護相當方便。目前在業界也被廣泛應用。\nReact 缺點: 在未曾接觸過的情況下,需要花時間自行摸索和熟悉,並且對大型應用的擴展性有挑戰。\nFirebase 優點: 屬於Nosql,且CRUD 等等大功能都已經存在,功能相當齊全,使用者可直接進行使用。\nFirebase 缺點: Firebase 使用上很便利,但有成本、限制和依賴問題。"
+    }
+  },
+  {
+    "id": "interview_dev_progress_tracking",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "3.3",
+      "question": "如何定期追蹤組員進度?遇到甚麼問題?",
+      "answer": "整體運作屬於扁平化組織,組員遇到任何問題都會馬上提出並討論,各自會處理好自己的部分,且有餘力會互相幫助。但因為時常拖到期限前才完成,彼此間無法完整的進行進度追蹤,且在git 上未建立分支,因此整合會花上很多時間。"
+    }
+  },
+  {
+    "id": "interview_project_biggest_problem",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "4",
+      "question": "(到目前為止,)專題遇到的最大問題是甚麼?如何解決?",
+      "answer": "學長姐正式在製作專題時,前端和後端都換成了新的語言,因此前期花費了些許時間熟悉新語言。然而,整個製作過程遇到最大的問題是:為了實現專題預期的效果,學長姐決定加入時下新穎的 AI 工具Microsoft azure 做使用。因為採用的是最新的架構,很難上網找到更好的參考對象以及資源來更好的運用這些服務。"
+    }
+  },
+  {
+    "id": "interview_sysdev_current_issues",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "5",
+      "question": "(到目前為止,)系統開發中遇到甚麼問題?如何解決?",
+      "answer": "學姐們指出,系統運作的流程需要經過討論,但有時討論不夠明確或者意見不一致時,可能需要重新設計。由於學長姐們的專題需要使用到 AI 技術,各人對於設計的預設想法可能存在差異,因此達成共識十分重要。透過詳細的說明可以讓自己的想法更清晰地被理解。同時,若有問題可立即提出,以便全組同學共同討論和解決。"
+    }
+  },
+  {
+    "id": "interview_sysdev_git_devops",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "5.1",
+      "question": "使用 git 嗎?遇到甚麼問題? (專題)",
+      "answer": "有,且同時使用 Devops 來記錄以及分配代辦事項給其他組員,並以其為命名依據。此舉改善了沒有建立分支的問題。"
+    }
+  },
+  {
+    "id": "interview_sysdev_languages_db_sa_comparison",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "5.2",
+      "question": "使用哪個語言、資料庫開發?跟SA使用的一樣嗎?為何? (專題)",
+      "answer": "因為專題製作上有產學合作,需要配合對方使用一樣的語言,因此前端、後端以及資料庫都是使用和先前不同的語言,前端使用的是 Vue、後端使用.net、資料庫則是使用 sqlserver。"
+    }
+  },
+  {
+    "id": "interview_sysdev_progress_tracking_sa_comparison",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "5.3",
+      "question": "如何定期追蹤組員進度?跟SA一樣嗎?遇到甚麼問題? (專題)",
+      "answer": "和 SA一樣,學長姐們沒有定期進行進度追蹤,直到開會時才能了解所有人的進展。然而,這樣的做法會增加不確定性,並導致遇到的問題被延遲解決。"
+    }
+  },
+  {
+    "id": "interview_advice_for_us",
+    "metadata": {
+      "source": "資管二乙第一組 訪談內容",
+      "interviewee": "董書妤、周佳欣",
+      "question_number": "6",
+      "question": "對各位的建議是?",
+      "answer": "- 要在Git 上建立分支,以便於後續合併。此外,分工應根據自己的系統來劃分,並且分工必須明確且公平。\n- 應確保每個人都清楚自己的任務,而不是假設大家的認知都是一致的。學姐們建議選出一位組長,以確保每個人知曉当前應該執行的任務。\n- 老師注重功能的合理性以及使用者體驗,並且很在意同學們對該作業的態度。"
+    }
+  }
+]
