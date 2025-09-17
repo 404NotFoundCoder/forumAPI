@@ -6,6 +6,7 @@ load_dotenv()
 
 
 from api.llm_client import get_openai_response
+from api.upload import upload_to_pinecone
 
 # local 開
 # from llm_client import get_groq_response, get_openai_response
@@ -31,6 +32,46 @@ def test():
 
     print("✅ 即將回傳資料：", result)
     return jsonify(result), 200
+
+
+@app.route("/api/upload", methods=["POST"])
+def upload():
+    """
+    上傳文本內容到 Pinecone 向量數據庫
+    接收 JSON 格式：
+    {
+        "id": "唯一識別碼",
+        "source": "資料來源",
+        "content": "要上傳的文本內容"
+    }
+    """
+    try:
+        data = request.get_json()
+
+        # 驗證必要欄位
+        if not data:
+            return jsonify({"error": "請提供 JSON 資料"}), 400
+
+        id = data.get("id")
+        source = data.get("source")
+        content = data.get("content")
+
+        if not all([id, source, content]):
+            return (
+                jsonify(
+                    {"error": "缺少必要欄位", "required": ["id", "source", "content"]}
+                ),
+                400,
+            )
+
+        # 調用上傳函數
+        upload_to_pinecone(id, source, content)
+
+        return jsonify({"message": "上傳成功", "id": id, "source": source}), 200
+
+    except Exception as e:
+        print(f"❌ 上傳 API 錯誤：{e}")
+        return jsonify({"error": "上傳失敗", "details": str(e)}), 500
 
 
 if __name__ == "__main__":

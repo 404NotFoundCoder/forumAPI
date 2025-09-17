@@ -12,7 +12,7 @@ load_dotenv()
 
 # 初始化 Pinecone
 pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
-index_name = "vec-0601"
+index_name = "vec-0601-bk"
 index = pc.Index(index_name)
 
 # 初始化 Cohere
@@ -44,7 +44,7 @@ def vector_search_light(user_input: str) -> dict:
 
         # 補一個合併所有文字的欄位（給 Prompt 用）
         formatted = "\n\n---\n\n".join(
-            f"{match['metadata']['interviewee']}說：\nQ：{match['metadata']['question']}\nA：{match['metadata']['answer']}"
+            f"Q：{match['metadata']['source']}\nA：{match['metadata']['content']}"
             for match in matches
         )
         sources = [match["metadata"]["source"] for match in matches]

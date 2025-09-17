@@ -8,8 +8,11 @@ from pinecone import Pinecone, ServerlessSpec
 # 載入 .env
 load_dotenv()
 
+# source = question+(interviewee)
+# CONTENT = 根據interviewee的經驗，answer
 
-def upload_file(file_path):
+
+def upload_to_pinecone(id, source, content):
     cohere_api_key = os.getenv("CO_API_KEY")
     pinecone_api_key = os.getenv("PINECONE_API_KEY")
 
@@ -33,41 +36,28 @@ def upload_file(file_path):
 
     index = pc.Index(index_name)
 
-    # 讀取 JSON
-    with open(file_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
     vectors = []
     co = cohere.Client(cohere_api_key)
 
-    for item in data:
-        question = item["metadata"].get("question", "")
-        answer = item["metadata"].get("answer", "")
-        text = question + "\n" + answer
+    print(f"🔍 正在處理 ID: {id}，文本內容: {content}")
 
-        print(f"🔍 正在處理 ID: {item['id']}，文本內容: {text}")
+    embedding = co.embed(
+        texts=[content], model="embed-multilingual-v3.0", input_type="search_document"
+    ).embeddings[0]
 
-        embedding = co.embed(
-            texts=[text], model="embed-multilingual-v3.0", input_type="search_document"
-        ).embeddings[0]
-
-        vectors.append(
-            {"id": item["id"], "values": embedding, "metadata": item["metadata"]}
-        )
+    vectors.append(
+        {
+            "id": id,
+            "values": embedding,
+            "metadata": {
+                "source": source,
+                "content": content,
+            },
+        }
+    )
 
     try:
         index.upsert(vectors=vectors)
         print(f"✅ 成功上傳 {len(vectors)} 筆向量到 Pinecone index `{index_name}`！")
     except Exception as e:
         print(f"❌ 上傳失敗：{e}")
-
-
-if __name__ == "__main__":
-    pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
-    index = pc.Index("vec-0601-bk")
-
-    # 抓一筆 (例如 doc1_q03)
-    res = index.fetch(
-        ids=["interview_srsd_issues"], namespace=""
-    )  # namespace 沒設定就用預設 ""
-    print(res)
