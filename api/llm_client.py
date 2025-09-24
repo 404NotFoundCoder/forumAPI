@@ -40,6 +40,7 @@ def get_openai_response(token: str, user_input: str) -> str:
     search_result = vector_search_light(user_input)
     context_text = search_result.get("text", "查無資料。")
     sources = search_result.get("sources", [])
+    ids = search_result.get("ids", [])
     messages = [
         {
             "role": "system",
@@ -55,4 +56,8 @@ def get_openai_response(token: str, user_input: str) -> str:
 
     # print("AAA機器人收到的資料",messages)
     print("AAA機器人回應", response.choices[0].message.content)
-    return {"answer": response.choices[0].message.content, "sources": sources}
+    return {
+        "answer": response.choices[0].message.content,
+        "sources": sources,
+        "ids": ids,
+    }
