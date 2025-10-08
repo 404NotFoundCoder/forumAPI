@@ -5,6 +5,7 @@ from flask_cors import CORS
 load_dotenv()
 
 
+from api.delete import delete_from_pinecone
 from api.llm_client import get_openai_response
 from api.upload import upload_to_pinecone
 
@@ -72,6 +73,40 @@ def upload():
     except Exception as e:
         print(f"❌ 上傳 API 錯誤：{e}")
         return jsonify({"error": "上傳失敗", "details": str(e)}), 500
+
+
+@app.route("/api/delete", methods=["DELETE"])
+def delete():
+    """
+    從 Pinecone 向量數據庫中刪除指定 ID 的資料
+    接收 JSON 格式：
+    {
+        "id": "要刪除的向量 ID"
+    }
+    """
+    try:
+        data = request.get_json()
+
+        # 驗證必要欄位
+        if not data:
+            return jsonify({"error": "請提供 JSON 資料"}), 400
+
+        id = data.get("id")
+
+        if not id:
+            return jsonify({"error": "缺少必要欄位", "required": ["id"]}), 400
+
+        # 調用刪除函數
+        success = delete_from_pinecone(id)
+
+        if success:
+            return jsonify({"message": "刪除成功", "id": id}), 200
+        else:
+            return jsonify({"error": "刪除失敗", "id": id}), 500
+
+    except Exception as e:
+        print(f"❌ 刪除 API 錯誤：{e}")
+        return jsonify({"error": "刪除失敗", "details": str(e)}), 500
 
 
 if __name__ == "__main__":
