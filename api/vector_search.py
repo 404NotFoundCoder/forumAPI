@@ -45,6 +45,10 @@ def vector_search_light(user_input: str) -> dict:
         filtered_matches = [
             match for match in all_matches if match.get("score", 0) > 0.5
         ]
+        # 依 score 由高到低排序
+        filtered_matches = sorted(
+            filtered_matches, key=lambda x: x.get("score", 0), reverse=True
+        )
 
         # 取篩選後最高的三筆（可能少於三筆）
         top_three_matches = filtered_matches[:3]

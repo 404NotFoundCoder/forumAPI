@@ -31,17 +31,29 @@ V_SENPAI_SYSTEM_PROMPT = """
 """
 
 
-def get_openai_response(token: str, user_input: str) -> str:
+def get_vector_search_result(user_input: str) -> dict:
+    """只進行向量搜尋，不回傳 LLM 回應"""
+    search_result = vector_search_light(user_input)
+    print("🔍 向量搜尋結果:", search_result)
+
+    return {
+        "sources": search_result.get("sources", []),
+        "ids": search_result.get("ids", []),
+        "matches": search_result.get("matches", []),
+        "context_text": search_result.get("text", "查無資料。"),
+    }
+
+
+def get_openai_response(token: str, user_input: str, context_text: str = None) -> str:
     client = OpenAI(
         base_url=ENDPOINT,
         api_key=token,
     )
 
-    search_result = vector_search_light(user_input)
-    context_text = search_result.get("text", "查無資料。")
-    sources = search_result.get("sources", [])
-    ids = search_result.get("ids", [])
-    matches = search_result.get("matches", [])
+    # 如果沒有提供 context_text，則重新搜尋
+    if context_text is None:
+        search_result = vector_search_light(user_input)
+        context_text = search_result.get("text", "查無資料。")
     messages = [
         {
             "role": "system",
@@ -59,7 +71,4 @@ def get_openai_response(token: str, user_input: str) -> str:
     print("AAA機器人回應", response.choices[0].message.content)
     return {
         "answer": response.choices[0].message.content,
-        "sources": sources,
-        "ids": ids,
-        "matches": matches,
     }

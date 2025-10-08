@@ -6,7 +6,7 @@ load_dotenv()
 
 
 from api.delete import delete_from_pinecone
-from api.llm_client import get_openai_response
+from api.llm_client import get_openai_response, get_vector_search_result
 from api.upload import upload_to_pinecone
 
 # local 開
@@ -21,8 +21,35 @@ def home():
     return jsonify({"message": "LLM Flask API is running."})
 
 
+@app.route("/api/search", methods=["POST"])
+def search():
+    """先回傳向量搜尋結果"""
+    data = request.get_json()
+    user_input = data.get("message", "")
+
+    result = get_vector_search_result(user_input)
+
+    print("✅ 即將回傳搜尋結果：", result)
+    return jsonify(result), 200
+
+
+@app.route("/api/answer", methods=["POST"])
+def answer():
+    """使用已搜尋的結果來取得 LLM 回應"""
+    data = request.get_json()
+    user_input = data.get("message", "")
+    access_token = data.get("accessToken")
+    context_text = data.get("context_text", None)
+
+    result = get_openai_response(access_token, user_input, context_text)
+
+    print("✅ 即將回傳答案：", result)
+    return jsonify(result), 200
+
+
 @app.route("/api/test", methods=["POST"])
 def test():
+    """原本的完整流程（向後相容）"""
     data = request.get_json()
     # print(f"收到的資料: {data}")
 
