@@ -35,26 +35,44 @@ def vector_search_light(user_input: str) -> dict:
         results = index.query(
             # namespace="interview-rag",
             vector=vector,
-            top_k=3,
+            top_k=50,
             include_values=False,
             include_metadata=True,
         )
 
-        matches = results.get("matches", [])
+        # 篩選 score > 0.5 的結果
+        all_matches = results.get("matches", [])
+        filtered_matches = [
+            match for match in all_matches if match.get("score", 0) > 0.5
+        ]
 
-        # 補一個合併所有文字的欄位（給 Prompt 用）
+        # 取篩選後最高的三筆（可能少於三筆）
+        top_three_matches = filtered_matches[:3]
+
+        # 補一個合併所有文字的欄位（給 Prompt 用）- 使用篩選後最高的三筆
         formatted = "\n\n---\n\n".join(
             f"Q：{match['metadata']['source']}\nA：{match['metadata']['content']}"
-            for match in matches
+            for match in top_three_matches
         )
-        sources = [match["metadata"]["source"] for match in matches]
-        ids = [m["id"] for m in matches]
+        sources = [match["metadata"]["source"] for match in top_three_matches]
+        ids = [m["id"] for m in top_three_matches]
 
-        print(f"🔍 向量查詢結果數量: {len(matches)}")
+        print(f"🔍 向量查詢結果數量: {len(filtered_matches)}")
+        print(f"🔍 篩選後最高三筆數量: {len(top_three_matches)}")
         # print(f"🔍 向量查詢結果內容: {formatted[:200]}...")  # 只顯示前200個字
 
+        # 將 matches 轉換為可序列化的格式
+        serializable_matches = []
+        for match in filtered_matches:
+            serializable_match = {
+                "id": match.get("id"),
+                "score": match.get("score"),
+                "metadata": match.get("metadata", {}),
+            }
+            serializable_matches.append(serializable_match)
+
         return {
-            "matches": matches,
+            "matches": serializable_matches,
             "sources": sources,
             "ids": ids,
             "text": formatted,  # ✅ 給 prompt 直接使用

@@ -41,6 +41,7 @@ def get_openai_response(token: str, user_input: str) -> str:
     context_text = search_result.get("text", "查無資料。")
     sources = search_result.get("sources", [])
     ids = search_result.get("ids", [])
+    matches = search_result.get("matches", [])
     messages = [
         {
             "role": "system",
@@ -60,4 +61,5 @@ def get_openai_response(token: str, user_input: str) -> str:
         "answer": response.choices[0].message.content,
         "sources": sources,
         "ids": ids,
+        "matches": matches,
     }
